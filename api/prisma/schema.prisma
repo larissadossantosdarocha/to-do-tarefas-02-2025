@@ -1,6 +1,3 @@
-// /prisma/schema.prisma
-
-// Defina o provedor de banco de dados (aqui estamos usando SQLite)
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,20 +9,19 @@ datasource db {
 
 // Definindo a tabela de Usuários
 model Usuario {
-  id        Int       @id @default(autoincrement())  // Chave primária
+  id        Int       @id @default(autoincrement())  
   nome      String
-  email     String    @unique  // Garantindo que o email seja único
-  tarefas   Tarefa[]  // Relacionamento 1:N com Tarefa
+  email     String    @unique 
+  tarefas   Tarefa[] 
 }
 
 // Definindo a tabela de Tarefas
 model Tarefa {
-  id          Int       @id @default(autoincrement())  // Chave primária
+  id          Int       @id @default(autoincrement()) 
   descricao   String
   setor       String
   prioridade  String
   status      String    @default("a fazer")
-  usuarioId   Int       // Relacionamento com a tabela Usuario
+  usuarioId   Int      
   usuario     Usuario  @relation(fields: [usuarioId], references: [id])
-  createdAt   DateTime  @default(now())  // Data de criação da tarefa
-}
+  createdAt   DateTime  @default(now())  

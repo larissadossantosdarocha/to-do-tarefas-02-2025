@@ -1,24 +1,17 @@
-import express from 'express'
-import cors from 'cors'
-import usuarioRoutes from './src/routes/usuarioroutes.js'
-import tarefaRoutes from './src/routes/tarefaroutes.js'
+import express from 'express';
+import usuarioRoutes from './src/routes/usuarioroutes.js';
+import cors from 'cors';
 
-const app = express()
+const app = express();
+const PORT = 3000;
 
-app.use(cors())
-app.use(express.json())
-
-// Rotas
-app.use('/usuarios', usuarioRoutes)
-app.use('/tarefas', tarefaRoutes)
-
-// Rota base
+app.use(cors());
+app.use(express.json());
+app.use('/api/usuarios', usuarioRoutes);
 app.get('/', (req, res) => {
-  res.send('API de gerenciamento de tarefas funcionando!')
-})
+  res.send('API de Gerenciamento de Tarefas funcionando!');
+});
 
-// Inicia servidor
-const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`)
-})
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});

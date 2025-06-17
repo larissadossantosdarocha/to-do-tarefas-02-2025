@@ -1,65 +1,38 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Tarefas</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Tarefas</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <!-- Header comum -->
-    <header>
-        <div class="header-left">
-            <h2>Gerenciamento de Tarefas</h2>
-        </div>
-        <div class="header-right">
-            <button onclick="window.location.href='cadastro_usuarios.html'">Cadastro de Usuários</button>
-            <button onclick="window.location.href='cadastro_tarefas.html'">Cadastro de Tarefas</button>
-            <button onclick="window.location.href='gerenciamento.html'">Gerenciar Tarefas</button>
-        </div>
-    </header>
+  <header>
+    <h1>Gerenciamento de Tarefas</h1>
+    <nav>
+      <a href="index.html">Cadastro de Usuários</a>
+      <a href="cadastro_tarefas.html">Cadastro de Tarefas</a>
+      <a href="gerenciamento.html">Gerenciar Tarefas</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h2>Tarefas</h2>
+    <div class="tarefas">
+      <div class="coluna">
+        <h3>A Fazer</h3>
+        <div id="tarefasAFazer"></div>
+      </div>
+      <div class="coluna">
+        <h3>Fazendo</h3>
+        <div id="tarefasFazendo"></div>
+      </div>
+      <div class="coluna">
+        <h3>Pronto</h3>
+        <div id="tarefasPronto"></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Tabela para exibir tarefas -->
-    <main>
-        <h3>Tarefas Cadastradas</h3>
-        <table id="tarefasTable">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Setor</th>
-                    <th>Usuário</th>
-                    <th>Prioridade</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </main>
-
-    <script>
-        // Função para carregar e exibir as tarefas
-        function carregarTarefas() {
-            const tarefas = JSON.parse(localStorage.getItem('tarefas') || '[]');
-            const tarefasTableBody = document.querySelector('#tarefasTable tbody');
-
-            tarefasTableBody.innerHTML = '';  // Limpa a tabela antes de adicionar
-
-            tarefas.forEach(tarefa => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${tarefa.descricao}</td>
-                    <td>${tarefa.setor}</td>
-                    <td>${tarefa.usuario}</td>
-                    <td>${tarefa.prioridade}</td>
-                `;
-                tarefasTableBody.appendChild(row);
-            });
-        }
-
-        // Carregar as tarefas ao carregar a página
-        window.onload = carregarTarefas;
-    </script>
+   <script src="gerenciamento.js"></script>
 </body>
-
 </html>

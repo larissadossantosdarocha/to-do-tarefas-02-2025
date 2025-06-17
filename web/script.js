@@ -1,7 +1,5 @@
-// Simula o cadastro de tarefas no localStorage
 const formCadastroTarefa = document.getElementById('formCadastroTarefa');
 
-// Função para carregar os usuários cadastrados
 function carregarUsuarios() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
     const usuarioSelect = document.getElementById('usuario');
@@ -14,16 +12,13 @@ function carregarUsuarios() {
     });
 }
 
-// Função para cadastrar a tarefa
 formCadastroTarefa.addEventListener('submit', function(event) {
-    event.preventDefault();  // Impede o comportamento padrão do formulário
 
+    event.preventDefault();  
     const descricao = document.getElementById('descricao').value;
     const setor = document.getElementById('setor').value;
     const prioridade = document.getElementById('prioridade').value;
     const usuario = document.getElementById('usuario').value;
-
-    // Cria um objeto de tarefa
     const tarefa = {
         descricao,
         setor,
@@ -31,7 +26,6 @@ formCadastroTarefa.addEventListener('submit', function(event) {
         usuario,
     };
 
-    // Armazena a tarefa no localStorage
     let tarefas = JSON.parse(localStorage.getItem('tarefas') || '[]');
     tarefas.push(tarefa);
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
@@ -40,5 +34,4 @@ formCadastroTarefa.addEventListener('submit', function(event) {
     formCadastroTarefa.reset();
 });
 
-// Carrega os usuários quando a página for carregada
 window.onload = carregarUsuarios;
