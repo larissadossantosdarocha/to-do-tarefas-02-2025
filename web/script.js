@@ -21,7 +21,6 @@ formCadastroTarefa.addEventListener('submit', function(event) {
     const descricao = document.getElementById('descricao').value;
     const setor = document.getElementById('setor').value;
     const prioridade = document.getElementById('prioridade').value;
-    const status = document.getElementById('status').value;
     const usuario = document.getElementById('usuario').value;
 
     // Cria um objeto de tarefa
@@ -29,7 +28,6 @@ formCadastroTarefa.addEventListener('submit', function(event) {
         descricao,
         setor,
         prioridade,
-        status,
         usuario,
     };
 
