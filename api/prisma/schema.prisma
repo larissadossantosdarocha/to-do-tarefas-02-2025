@@ -21,7 +21,8 @@ model Tarefa {
   descricao   String
   setor       String
   prioridade  String
-  status      String    @default("a fazer")
   usuarioId   Int      
   usuario     Usuario  @relation(fields: [usuarioId], references: [id])
   createdAt   DateTime  @default(now())  
+
+}
