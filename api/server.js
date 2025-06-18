@@ -1,17 +1,19 @@
-import express from 'express';
-import usuarioRoutes from './src/routes/usuarioroutes.js';
-import cors from 'cors';
+const express = require('express');
+const cors = require('cors');
+require("dotenv").config();
+const { PrismaClient } = require("@prisma/client");
+
+const routes = require("./src/routes.js");
+
+const prisma = new PrismaClient();
 
 const app = express();
-const PORT = 3000;
-
 app.use(cors());
 app.use(express.json());
-app.use('/api/usuarios', usuarioRoutes);
-app.get('/', (req, res) => {
-  res.send('API de Gerenciamento de Tarefas funcionando!');
-});
+app.use('/', routes);
+const port = 3000;
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });

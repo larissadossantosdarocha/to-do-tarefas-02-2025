@@ -3,11 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" 
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-// Definindo a tabela de Usuários
 model Usuario {
   id        Int       @id @default(autoincrement())  
   nome      String
@@ -15,7 +14,6 @@ model Usuario {
   tarefas   Tarefa[] 
 }
 
-// Definindo a tabela de Tarefas
 model Tarefa {
   id          Int       @id @default(autoincrement()) 
   descricao   String
