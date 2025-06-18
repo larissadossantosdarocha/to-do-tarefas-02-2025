@@ -1,53 +1,79 @@
- const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+async function carregarTarefas() {
+  try {
+    const resposta = await fetch('http://localhost:3000/tarefas');
+    const tarefas = await resposta.json();
 
-    function exibirTarefas() {
-      tarefas.forEach((tarefa, index) => {
-        const tarefaDiv = document.createElement('div');
-        tarefaDiv.classList.add('card');
-        tarefaDiv.innerHTML = `
-          <strong>Descrição:</strong> ${tarefa.descricao}<br>
-          <strong>Setor:</strong> ${tarefa.setor}<br>
-          <strong>Prioridade:</strong> ${tarefa.prioridade}<br>
-          <strong>Vinculado a:</strong> ${tarefa.usuario}<br>
-          <button onclick="editarTarefa(${index})">Editar</button> 
-          <button onclick="excluirTarefa(${index})">Excluir</button><br>
-          <br>
-          <option>Alterar status</option>
-          <button onclick="mudarStatus(${index}, 'Fazendo')">Fazendo</button>
-          <button onclick="mudarStatus(${index}, 'Pronto')">Pronto</button>
-        `;
+    tarefas.forEach(tarefa => {
+      const tarefaDiv = document.createElement('div');
+      tarefaDiv.classList.add('card');
+      tarefaDiv.innerHTML = `
+        <strong>Descrição:</strong> ${tarefa.descricao}<br>
+        <strong>Setor:</strong> ${tarefa.setor}<br>
+        <strong>Prioridade:</strong> ${tarefa.prioridade}<br>
+        <strong>Vinculado a:</strong> ${tarefa.usuario.nome}<br>
+        <button onclick="editarTarefa(${tarefa.id}, '${tarefa.descricao}')">Editar</button> 
+        <button onclick="excluirTarefa(${tarefa.id})">Excluir</button><br>
+        <br>
+        <option>Alterar status</option>
+        <button onclick="mudarStatus(${tarefa.id}, 'Fazendo')">Fazendo</button>
+        <button onclick="mudarStatus(${tarefa.id}, 'Pronto')">Pronto</button>
+      `;
 
-        if (tarefa.status === 'Fazendo') {
-          document.getElementById('tarefasFazendo').appendChild(tarefaDiv);
-        } else if (tarefa.status === 'Pronto') {
-          document.getElementById('tarefasPronto').appendChild(tarefaDiv);
-        } else {
-          document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
-        }
-      });
-    }
-
-    function editarTarefa(index) {
-      const tarefa = tarefas[index];
-      const descricao = prompt("Editar descrição:", tarefa.descricao);
-      if (descricao) {
-        tarefa.descricao = descricao;
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        location.reload(); 
+      if (tarefa.status === 'Fazendo') {
+        document.getElementById('tarefasFazendo').appendChild(tarefaDiv);
+      } else if (tarefa.status === 'Pronto') {
+        document.getElementById('tarefasPronto').appendChild(tarefaDiv);
+      } else {
+        document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
       }
-    }
+    });
+  } catch (error) {
+    console.error('Erro ao carregar tarefas:', error);
+    alert('Erro ao carregar tarefas');
+  }
+}
 
-    function excluirTarefa(index) {
-      tarefas.splice(index, 1);
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload();
-    }
+async function editarTarefa(id, descricaoAtual) {
+  const novaDescricao = prompt("Editar descrição:", descricaoAtual);
+  if (!novaDescricao) return;
 
-    function mudarStatus(index, novoStatus) {
-      tarefas[index].status = novoStatus;
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload();
-    }
+  try {
+    await fetch(`http://localhost:3000/tarefas/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ descricao: novaDescricao })
+    });
+    location.reload();
+  } catch (error) {
+    console.error(error);
+    alert('Erro ao editar tarefa');
+  }
+}
 
-    exibirTarefas();
- 
+async function excluirTarefa(id) {
+  try {
+    await fetch(`http://localhost:3000/tarefas/${id}`, {
+      method: 'DELETE'
+    });
+    location.reload();
+  } catch (error) {
+    console.error(error);
+    alert('Erro ao excluir tarefa');
+  }
+}
+
+async function mudarStatus(id, novoStatus) {
+  try {
+    await fetch(`http://localhost:3000/tarefas/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: novoStatus })
+    });
+    location.reload();
+  } catch (error) {
+    console.error(error);
+    alert('Erro ao mudar status');
+  }
+}
+
+carregarTarefas();
