@@ -1,62 +1,49 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const formCadastroTarefa = document.getElementById('formCadastroTarefa');
+async function carregarUsuarios() {
+  try {
+    const response = await fetch('http://localhost:3000/u'); // URL corrigida
+    const usuarios = await response.json();
 
-    // Carregar usuários do backend (opcional)
-    async function carregarUsuarios() {
-        try {
-            const resposta = await fetch('http://localhost:3000/usuarios');
-            const usuarios = await resposta.json();
+    const select = document.getElementById('usuario');
+    select.innerHTML = ''; // limpa as opções antigas
 
-            const usuarioSelect = document.getElementById('usuario');
-            usuarioSelect.innerHTML = '';
+    usuarios.forEach(usuario => {
+      const option = document.createElement('option');
+      option.value = usuario.id;
+      option.textContent = usuario.nome;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    alert('Erro ao carregar usuários: ' + error.message);
+  }
+}
 
-            usuarios.forEach(usuario => {
-                const option = document.createElement('option');
-                option.value = usuario.id; // melhor usar ID
-                option.textContent = usuario.nome;
-                usuarioSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Erro ao carregar usuários:', error);
-            alert('Erro ao carregar usuários');
-        }
-    }
+document.getElementById('formCadastroTarefa')?.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-    formCadastroTarefa.addEventListener('submit', async function (event) {
-        event.preventDefault();
+  const descricao = document.getElementById('descricao').value;
+  const setor = document.getElementById('setor').value;
+  const usuarioId = document.getElementById('usuario').value;
+  const prioridade = document.getElementById('prioridade').value;
 
-        const descricao = document.getElementById('descricao').value;
-        const setor = document.getElementById('setor').value;
-        const prioridade = document.getElementById('prioridade').value;
-        const usuarioId = document.getElementById('usuario').value;
-
-        const tarefa = {
-            descricao,
-            setor,
-            prioridade,
-            usuarioId: Number(usuarioId)
-        };
-
-        try {
-            const resposta = await fetch('http://localhost:3000/tarefas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(tarefa)
-            });
-
-            if (!resposta.ok) {
-                throw new Error('Erro ao cadastrar tarefa');
-            }
-
-            alert('Tarefa cadastrada com sucesso!');
-            formCadastroTarefa.reset();
-        } catch (error) {
-            console.error(error);
-            alert('Erro ao cadastrar tarefa');
-        }
+  try {
+    const response = await fetch('http://localhost:3000/t', {  // URL corrigida
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        descricao,
+        setor,
+        usuarioId: parseInt(usuarioId),
+        prioridade
+      })
     });
 
-    carregarUsuarios();
+    if (!response.ok) throw new Error('Erro ao cadastrar tarefa');
+
+    alert('Tarefa cadastrada com sucesso!');
+    document.getElementById('formCadastroTarefa').reset();
+  } catch (error) {
+    alert('Erro: ' + error.message);
+  }
 });
+
+window.onload = carregarUsuarios;

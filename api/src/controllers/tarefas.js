@@ -1,34 +1,38 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const create = async (req, res) => {
-  const { desc, setor, prioridade, usuarioId, dataCadastro } = req.body;
+async function create(req, res) {
+  const { descricao, setor, usuarioId, prioridade } = req.body;
 
   try {
     const tarefa = await prisma.tarefa.create({
       data: {
-        desc,
+        descricao,
         setor,
         prioridade,
-        usuarioId,
-        dataCadastro: new Date(dataCadastro)
+        usuarioId: Number(usuarioId)
       }
     });
-
-    return res.status(201).json(tarefa);
+    res.status(201).json(tarefa);
   } catch (error) {
-    console.error('Erro ao cadastrar tarefa:', error);
-    return res.status(400).json({ error: 'Erro ao cadastrar tarefa.' });
+    console.error('Erro ao criar tarefa:', error);
+    res.status(500).json({ erro: 'Erro no servidor.' });
   }
-};
+}
 
-const read = async (req, res) => {
+async function read(req, res) {
   try {
-    const tarefas = await prisma.tarefa.findMany();
-    return res.status(200).json(tarefas);
+    const tarefas = await prisma.tarefa.findMany({
+      include: { usuario: true },  // Isso inclui os dados do usuário em cada tarefa
+    });
+    res.json(tarefas);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    res.status(500).json({ erro: 'Erro ao buscar tarefas.' });
   }
-};
+}
 
-module.exports = { create, read };
+
+module.exports = {
+  create,
+  read
+};

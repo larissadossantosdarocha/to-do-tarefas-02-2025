@@ -1,20 +1,21 @@
-const formCadastroUsuario = document.getElementById('formCadastroUsuario');
+document.getElementById('formCadastroUsuario')?.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-formCadastroUsuario.addEventListener('submit', function(event) {
-    event.preventDefault(); 
+  const nome = document.getElementById('nome').value;
+  const email = document.getElementById('email').value;
 
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    const usuario = {
-        nome,
-        email
-    };
+  try {
+    const response = await fetch('http://localhost:3000/u', {  // URL corrigida
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, email })
+    });
 
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    usuarios.push(usuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    if (!response.ok) throw new Error('Erro ao cadastrar usuário');
 
     alert('Usuário cadastrado com sucesso!');
-
-    formCadastroUsuario.reset();
+    document.getElementById('formCadastroUsuario').reset();
+  } catch (error) {
+    alert('Erro: ' + error.message);
+  }
 });

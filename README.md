@@ -18,4 +18,4 @@ A apresentação das tarefas será feita em uma tabela com três colunas represe
 
 ![DC](./docs/wireframes/novo.png)
 
-![dia](./docs/wireframes/novo1.png)
+![dia](./docs/wireframes/novo3.png)
