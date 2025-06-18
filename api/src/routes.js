@@ -21,6 +21,5 @@ routes.get('/t', Tarefas.read);
 routes.get('/tarefas', Gerenciamento.get);             
 routes.put('/tarefas/:id', Gerenciamento.update);        
 routes.delete('/tarefas/:id', Gerenciamento.remove);
-routes.put('/tarefas/status/:id', Gerenciamento.atualizarStatus); 
 
 module.exports = routes;
