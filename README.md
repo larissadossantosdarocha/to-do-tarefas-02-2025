@@ -16,4 +16,6 @@ A apresentação das tarefas será feita em uma tabela com três colunas represe
 
 ![DER](./docs/wireframes/Captura%20de%20tela%202025-06-18%20092658.png)
 
-![DC](./docs/wireframes/Captura%20de%20tela%202025-06-18%20093456.png)
+![DC](./docs/wireframes/novo.png)
+
+![dia](./docs/wireframes/novo1.png)
